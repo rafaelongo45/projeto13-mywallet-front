@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link }from "react-router-dom"
+import { Link }from "react-router-dom";
 
 function SignUp() {
   return (
@@ -10,7 +10,7 @@ function SignUp() {
         <input placeholder="E-mail"></input>
         <input placeholder="Senha"></input>
         <input placeholder="Confirme a senha"></input>
-        <button>Cadastrar</button>
+        <Link to="/"><button>Cadastrar</button></Link>
       </Form>
       <Link to="/"><Button > Já tem uma conta? Entre agora!</Button></Link>
     </>
@@ -48,8 +48,13 @@ const Form = styled.form`
     font-size: 20px;
     }
 
-    button{
+    a{
       width: 85%;
+      padding-right: 10px;
+    }
+
+    button{
+      width: 100%;
       height: 45px;
       background-color:rgba(163, 40, 214, 1);
       border:none;

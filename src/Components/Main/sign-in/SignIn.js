@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link }from "react-router-dom"
+import { Link }from "react-router-dom";
 
 function SignUp() {
   return (
@@ -8,7 +8,7 @@ function SignUp() {
       <Form >
         <input placeholder="E-mail"></input>
         <input placeholder="Senha"></input>
-        <button>Entrar</button>
+        <Link to = "/wallet"><button > Entrar</button></Link>
       </Form>
       <Link to="/sign-up"><Button > Primeira vez? Cadastre-se!</Button></Link>
     </>
@@ -35,10 +35,11 @@ const Form = styled.form`
   flex-direction: column;
   width: 100%;
   align-items: center;
+  
 
   input{
-    width: 85%;
     height: 50px;
+    width: 85%;
     border: 1px solid grey;
     border-radius: 5px;
     margin-bottom: 10px;
@@ -46,8 +47,13 @@ const Form = styled.form`
     font-size: 20px;
     }
 
-    button{
+    a{
       width: 85%;
+      padding-right: 10px;
+    }
+
+    button{
+      width: 100%;
       height: 45px;
       background-color:rgba(163, 40, 214, 1);
       border:none;

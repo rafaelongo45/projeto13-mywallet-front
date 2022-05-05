@@ -1,23 +1,21 @@
 import axios from "axios";
-import { useState } from "react"
+import { useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
-  const navigate = useNavigate;
-
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({name:"", email:"", password:"", confirmPassword:""});
 
   function userSignUp(event){
     event.preventDefault();
-    console.log(userData)
 
     if(userData.password!==userData.confirmPassword){
       alert("Senhas não conferem!")
       return
     }
 
-    const promise = axios.post("http://127.0.0.1:5000/users", {
+    const promise = axios.post("http://127.0.0.1:5000/signup", {
       name: userData.name, 
       email: userData.email,
       password: userData.password
@@ -26,7 +24,7 @@ function SignUp() {
     promise.then((response) => {
       const {data} = response;
       console.log(data);
-      navigate("/");
+      navigate("/")
     });
     promise.catch((error) => {
       alert(error.response.data)
@@ -38,7 +36,7 @@ function SignUp() {
     <>
       <Header>MyWallet</Header>
       <Form onSubmit={userSignUp}>
-        <input placeholder="Nome" value = {userData.name} onChange={e => setUserData({...userData, name:e.target.value})}></input>
+        <input placeholder="Nome" value={userData.name} onChange={e => setUserData({...userData, name:e.target.value})}></input>
         <input type = "email" placeholder="E-mail" value = {userData.email} onChange={e => setUserData({...userData, email:e.target.value})}></input>
         <input type ="password" placeholder="Senha" value = {userData.password} onChange={e => setUserData({...userData, password:e.target.value})}></input>
         <input type ="password" value = {userData.confirmPassword} onChange={e => setUserData({...userData, confirmPassword:e.target.value})} placeholder="Confirme a senha"></input>
@@ -48,8 +46,6 @@ function SignUp() {
     </>
   );
 }
-
-//FIXME: Invalid hookcall wtf
 
 export default SignUp;
 

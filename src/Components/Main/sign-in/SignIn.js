@@ -1,25 +1,42 @@
+import axios from "axios";
+import { useState } from "react";
 import styled from "styled-components";
-import { Link }from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function SignUp() {
+function SignIn() {
+  const navigate = useNavigate();
+  const [userCred, setUserCred] = useState({email:"", password:""})
+
+  function login(event){
+    event.preventDefault();
+
+    const promise = axios.post("http://127.0.0.1:5000/login", userCred);
+
+    promise.then((response) => {
+      console.log(response.data);
+      navigate("/wallet")
+    })
+
+    promise.catch((error) => {
+      alert(error.response.data);
+      console.log(error);
+    });
+  }
+
   return (
     <>
       <Header>MyWallet</Header>
-      <Form >
-        <input placeholder="E-mail"></input>
-        <input placeholder="Senha"></input>
-        <Link to = "/wallet"><button > Entrar</button></Link>
+      <Form onSubmit={login}>
+        <input placeholder="E-mail" type="email" value={userCred.email} onChange={e=> setUserCred({...userCred, email:e.target.value})}></input>
+        <input placeholder="Senha"type="password"value={userCred.password} onChange={e=> setUserCred({...userCred, password:e.target.value})}></input>
+        <button type="submit"> Entrar</button>
       </Form>
       <Link to="/sign-up"><Button > Primeira vez? Cadastre-se!</Button></Link>
     </>
   );
 }
 
-//TODO: Implementar a biblioteca axios quando o back-end estiver terminado.
-//TODO: Botão de login se tiver sucesso, ir para a página da carteira do mano.
-
-
-export default SignUp;
+export default SignIn;
 
 const Header = styled.header`
   font-family: Saira Stencil One;
@@ -47,13 +64,8 @@ const Form = styled.form`
     font-size: 20px;
     }
 
-    a{
-      width: 85%;
-      padding-right: 10px;
-    }
-
     button{
-      width: 100%;
+      width: 85%;
       height: 45px;
       background-color:rgba(163, 40, 214, 1);
       border:none;

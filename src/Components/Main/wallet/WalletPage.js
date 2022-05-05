@@ -41,6 +41,8 @@ function WalletPage() {
   );
 }
 
+//TODO: Implementar a biblioteca axios quando o back-end estiver terminado.
+
 export default WalletPage;
 
 const Header = styled.header`

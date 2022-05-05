@@ -1,25 +1,55 @@
+import axios from "axios";
+import { useState } from "react"
 import styled from "styled-components";
-import { Link }from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
+  const navigate = useNavigate;
+
+  const [userData, setUserData] = useState({name:"", email:"", password:"", confirmPassword:""});
+
+  function userSignUp(event){
+    event.preventDefault();
+    console.log(userData)
+
+    if(userData.password!==userData.confirmPassword){
+      alert("Senhas não conferem!")
+      return
+    }
+
+    const promise = axios.post("http://127.0.0.1:5000/users", {
+      name: userData.name, 
+      email: userData.email,
+      password: userData.password
+  });
+
+    promise.then((response) => {
+      const {data} = response;
+      console.log(data);
+      navigate("/");
+    });
+    promise.catch((error) => {
+      alert(error.response.data)
+      console.log(error)
+    });
+  }
+
   return (
     <>
       <Header>MyWallet</Header>
-      <Form >
-        <input placeholder="Nome"></input>
-        <input placeholder="E-mail"></input>
-        <input placeholder="Senha"></input>
-        <input placeholder="Confirme a senha"></input>
-        <Link to="/"><button>Cadastrar</button></Link>
+      <Form onSubmit={userSignUp}>
+        <input placeholder="Nome" value = {userData.name} onChange={e => setUserData({...userData, name:e.target.value})}></input>
+        <input type = "email" placeholder="E-mail" value = {userData.email} onChange={e => setUserData({...userData, email:e.target.value})}></input>
+        <input type ="password" placeholder="Senha" value = {userData.password} onChange={e => setUserData({...userData, password:e.target.value})}></input>
+        <input type ="password" value = {userData.confirmPassword} onChange={e => setUserData({...userData, confirmPassword:e.target.value})} placeholder="Confirme a senha"></input>
+        <button type="submit">Cadastrar</button>
       </Form>
-      <Link to="/"><Button > Já tem uma conta? Entre agora!</Button></Link>
+      <Link to="/"><Button> Já tem uma conta? Entre agora!</Button></Link>
     </>
   );
 }
 
-//TODO: Implementar a biblioteca axios quando o back-end estiver terminado.
-//TODO: Botão de cadastrar se tiver sucesso, voltar para a página de login.
-
+//FIXME: Invalid hookcall wtf
 
 export default SignUp;
 
@@ -48,13 +78,8 @@ const Form = styled.form`
     font-size: 20px;
     }
 
-    a{
-      width: 85%;
-      padding-right: 10px;
-    }
-
     button{
-      width: 100%;
+      width: 85%;
       height: 45px;
       background-color:rgba(163, 40, 214, 1);
       border:none;

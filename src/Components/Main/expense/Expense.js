@@ -17,6 +17,8 @@ function ExpensePage(){
   );
 }
 
+//TODO: Implementar a biblioteca axios quando o back-end estiver terminado.
+
 export default ExpensePage;
 
 const Header = styled.header`

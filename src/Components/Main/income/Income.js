@@ -17,6 +17,8 @@ function IncomePage(){
   );
 }
 
+//TODO: Implementar a biblioteca axios quando o back-end estiver terminado.
+
 export default IncomePage;
 
 const Header = styled.header`

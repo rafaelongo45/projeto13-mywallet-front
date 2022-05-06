@@ -1,23 +1,58 @@
+import axios from "axios";
 import styled from "styled-components";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {useState, useContext} from "react";
+
+import UserContext from "../../Contexts/UserContext";
 
 function ExpensePage(){
+  const navigate = useNavigate();
+  const [operation, setOperation] = useState({
+    description: "",
+    amount: "",
+  })
+  const {token} = useContext(UserContext);
+
+  function addExpense(event){
+    event.preventDefault();
+
+    const config = {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }
+
+    const promise = axios.post("http://127.0.0.1:5000/transactions", {
+      description: operation.description,
+      amount: operation.amount,
+      type: "expense"
+    }, config)
+
+    promise.then((response) => {
+      console.log(response);
+      navigate("/wallet");
+    });
+
+    promise.catch((error) => {
+      alert(error.response.data);
+      console.log(error);
+    });
+  }
+
   return (
     <>
         <Header>
           <h1>Nova Saída</h1>
         </Header>
 
-        <Form >
-        <input placeholder="Valor"></input>
-        <input placeholder="Descrição"></input>
-        <Link to = "/wallet"><button > Salvar Saída</button></Link>
+        <Form onSubmit={addExpense}>
+        <input placeholder="Valor" value={operation.amount} onChange={(e) => setOperation({...operation, amount: e.target.value})}></input>
+        <input placeholder="Descrição" value={operation.description} onChange={(e) => setOperation({...operation, description: e.target.value})}></input>
+        <button type="submit"> Salvar Saída</button>
       </Form>
     </>
   );
 }
-
-//TODO: Implementar a biblioteca axios quando o back-end estiver terminado.
 
 export default ExpensePage;
 
@@ -53,13 +88,8 @@ const Form = styled.form`
     font-size: 20px;
     }
 
-    a{
-      width: 86%;
-      padding-right: 10px;
-    }
-
     button{
-      width: 100%;
+      width: 85%;
       height: 50px;
       background-color:rgba(163, 40, 214, 1);
       border:none;

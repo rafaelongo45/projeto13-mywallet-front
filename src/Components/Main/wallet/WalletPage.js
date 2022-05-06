@@ -1,10 +1,16 @@
+import { useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 
+import UserContext from "../../Contexts/UserContext.js";
+
 function WalletPage() {
+  const {token} = useContext(UserContext);
+  console.log(token)
+  
   return (
     <>
       <Header>

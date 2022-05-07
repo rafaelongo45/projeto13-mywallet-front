@@ -11,20 +11,24 @@ function ExpensePage(){
     description: "",
     amount: "",
   })
-  const {token} = useContext(UserContext);
+  const {data} = useContext(UserContext);
 
   function addExpense(event){
     event.preventDefault();
 
+    event.preventDefault();
+    let acceptComma = operation.amount.toString().replace(',','.');
+    acceptComma = parseFloat(acceptComma);
+
     const config = {
       headers: {
-        "Authorization": `Bearer ${token}`
+        "Authorization": `Bearer ${data.token}`
       }
     }
 
     const promise = axios.post("http://127.0.0.1:5000/transactions", {
       description: operation.description,
-      amount: operation.amount,
+      amount: acceptComma,
       type: "expense"
     }, config)
 

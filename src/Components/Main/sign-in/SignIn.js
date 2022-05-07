@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useState, useContext } from "react";
 import styled from "styled-components";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import UserContext from "../../Contexts/UserContext.js";
@@ -8,7 +8,7 @@ import UserContext from "../../Contexts/UserContext.js";
 function SignIn() {
   const navigate = useNavigate();
   const [userCred, setUserCred] = useState({email:"", password:""});
-  const {setToken} = useContext(UserContext);
+  const {setData} = useContext(UserContext);
 
   function login(event){
     event.preventDefault();
@@ -16,7 +16,8 @@ function SignIn() {
     const promise = axios.post("http://127.0.0.1:5000/login", userCred);
 
     promise.then((response) => {
-      setToken(response.data)
+      console.log(response)
+      setData(response.data)
       navigate("/wallet")
     })
 

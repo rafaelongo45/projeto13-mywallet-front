@@ -10,11 +10,11 @@ import UserContext from "../Contexts/UserContext.js";
 
 
 function App(){
-  const [token, setToken] = useState("");
+  const [data, setData] = useState({token:"", user:""});
 
   return (
     <BrowserRouter>
-        <UserContext.Provider value = {{token, setToken}}>
+        <UserContext.Provider value = {{data, setData}}>
           <Routes>
             <Route path="/" element={<SignIn/>}/>
             <Route path="/sign-up" element={<SignUp/>}/>

@@ -7,22 +7,25 @@ import UserContext from "../../Contexts/UserContext.js";
 
 function IncomePage(){
   const navigate = useNavigate();
-  const {token} = useContext(UserContext);
+  const {data} = useContext(UserContext);
   const [operation, setOperation] = useState({description: "", amount: ""});
 
-  console.log(token)
+  console.log(data)
 
   function addIncome(event){
     event.preventDefault();
+    let acceptComma = operation.amount.toString().replace(',','.');
+    acceptComma = parseFloat(acceptComma);
+
     const config = {
       headers: {
-        "Authorization": `Bearer ${token}`
+        "Authorization": `Bearer ${data.token}`
       }
     }
 
     const promise = axios.post("http://127.0.0.1:5000/transactions", {
       description: operation.description,
-      amount: operation.amount,
+      amount: acceptComma,
       type: "income"
     }, config);
 

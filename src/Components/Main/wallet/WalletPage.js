@@ -1,28 +1,55 @@
-import { useContext } from "react";
+import axios from "axios";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { AiOutlineMinusCircle } from "react-icons/ai";
+import { useContext, useEffect, useState } from "react";
 
 import UserContext from "../../Contexts/UserContext.js";
+import RenderTransactions from "./RenderTransactions.js";
 
 function WalletPage() {
-  const {token} = useContext(UserContext);
-  console.log(token)
-  
+  const navigate = useNavigate();
+  const [total,setTotal] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+
+  const {data} = useContext(UserContext);
+
+  useEffect(()=> {
+    const config = {
+    headers:{
+      'Authorization': `Bearer ${data.token}`
+    }
+  }
+    const promise = axios.get("http://127.0.0.1:5000/transactions", config);
+
+    promise.then((response) => {
+      setTransactions(response.data);
+    })
+
+    promise.catch((error) => {
+      alert(error.response.data);
+      console.log(error);
+    })
+  }, [data.token]);
+
+  function logOut(e){
+    e.preventDefault();
+    navigate("/");
+    window.location.reload();
+  }
+
   return (
     <>
       <Header>
-        <h1>Olá, nome do usuario</h1>
-        <button>
+        <h1>Olá, {data.user}</h1>
+        <button onClick = {logOut}>
           <RiLogoutBoxRLine />
         </button>
       </Header>
 
-      <Main>
-        <p>Não há registros de entrada ou saída</p>
-      </Main>
+      <RenderTransactions transactions = {transactions} total={total} setTotal={setTotal}/>
 
       <Section>
         <Link to="/income">
@@ -47,8 +74,6 @@ function WalletPage() {
   );
 }
 
-//TODO: Implementar a biblioteca axios quando o back-end estiver terminado.
-
 export default WalletPage;
 
 const Header = styled.header`
@@ -70,24 +95,6 @@ const Header = styled.header`
     font-size: 30px;
     border: none;
     color: rgba(255, 255, 255, 1);
-  }
-`;
-
-const Main = styled.main`
-  width: 90%;
-  height: 68%;
-  background-color: rgba(255, 255, 255, 1);
-  margin-top: 15px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  p {
-    width: 60%;
-    text-align: center;
-    font-size: 22px;
-    color: rgba(134, 134, 134, 1);
   }
 `;
 
@@ -133,3 +140,4 @@ const Section = styled.section`
     }
   }
 `;
+

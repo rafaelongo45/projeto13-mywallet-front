@@ -2,11 +2,13 @@ import axios from "axios";
 import { BiX } from "react-icons/bi";
 import styled from "styled-components";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import UserContext from "../../Contexts/UserContext";
 
 
 function RenderTransactions({transactions, total, setTotal}){
+  const navigate = useNavigate();
   const {data} = useContext(UserContext);
   
   let sumIncome = 0;
@@ -29,6 +31,22 @@ function RenderTransactions({transactions, total, setTotal}){
 
       promise.then((error) => {
         console.log(error)
+      })
+    }
+  }
+
+  function update(type, id){
+    if(type === "income"){
+      navigate(`/update-income/`, {
+        state: {
+          id
+        }
+      })
+    }else{
+      navigate(`/update-expense/`, {
+        state: {
+          id
+        }
       })
     }
   }
@@ -56,7 +74,7 @@ function RenderTransactions({transactions, total, setTotal}){
                 <Div type={transaction.type} key = {index + transaction.description}>
                   <h1>{transaction.date}</h1>
                   <span>
-                    <p>{transaction.description}</p>
+                  <button onClick={() => update(transaction.type, transaction._id)}><p>{transaction.description}</p></button>
                     <em>{transaction.amount.toFixed(2).toString().replace('.',',')} <button onClick={() => deleteTransaction(transaction._id)}><BiX/></button></em>
                     
                   </span>  

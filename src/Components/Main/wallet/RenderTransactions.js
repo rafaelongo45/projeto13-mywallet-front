@@ -1,8 +1,37 @@
+import axios from "axios";
+import { BiX } from "react-icons/bi";
 import styled from "styled-components";
+import { useContext } from "react";
+
+import UserContext from "../../Contexts/UserContext";
+
 
 function RenderTransactions({transactions, total, setTotal}){
+  const {data} = useContext(UserContext);
+  
   let sumIncome = 0;
   let sumExpense = 0;
+
+  function deleteTransaction(id){
+    if(window.confirm("Deseja realmente deletar a transação?")){
+    
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${data.token}`
+        }
+    }  
+
+    const promise = axios.delete(`http://127.0.0.1:5000/transactions/${id}`, config);
+
+      promise.then((response) => {
+        console.log(response);
+      })
+
+      promise.then((error) => {
+        console.log(error)
+      })
+    }
+  }
 
   return (
     <Main total={total}>
@@ -28,7 +57,8 @@ function RenderTransactions({transactions, total, setTotal}){
                   <h1>{transaction.date}</h1>
                   <span>
                     <p>{transaction.description}</p>
-                    <em>{transaction.amount.toFixed(2).toString().replace('.',',')}</em>
+                    <em>{transaction.amount.toFixed(2).toString().replace('.',',')} <button onClick={() => deleteTransaction(transaction._id)}><BiX/></button></em>
+                    
                   </span>  
                 </Div>
               )              
@@ -42,7 +72,6 @@ function RenderTransactions({transactions, total, setTotal}){
           </>
         }
 
-        
       </Main>
   )
 }
@@ -130,6 +159,13 @@ const Div = styled.div`
     width:85%;
   }
 
+  button{
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: rgba(198, 198, 198, 1);
+  }
+
   p{
     text-align:start;
     color: rgba(0,0,0,1);
@@ -140,5 +176,6 @@ const Div = styled.div`
   em{
     color: ${props => props.type === "income"?'rgba(34, 182, 31, 1)':'rgb(199, 0, 0)'};
     text-align:end;
+    display:flex;
   }
 `

@@ -32,7 +32,7 @@ function WalletPage() {
       alert(error.response.data);
       console.log(error);
     })
-  }, [data.token]);
+  }, [data.token, transactions]);
 
   function logOut(e){
     e.preventDefault();

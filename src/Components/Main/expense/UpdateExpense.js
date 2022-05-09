@@ -24,7 +24,7 @@ function UpdateExpense(){
       }
     }
 
-    const promise = axios.put(`http://127.0.0.1:5000/transactions/${id}`, {
+    const promise = axios.put(`hhttps://mywallet-b.herokuapp.com/transactions/${id}`, {
       description: operation.description,
       amount: acceptComma,
       type: "expense"

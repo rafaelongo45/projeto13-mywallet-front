@@ -23,7 +23,7 @@ function IncomePage(){
       }
     }
 
-    const promise = axios.post("http://127.0.0.1:5000/transactions", {
+    const promise = axios.post("https://mywallet-b.herokuapp.com/transactions", {
       description: operation.description,
       amount: acceptComma,
       type: "income"

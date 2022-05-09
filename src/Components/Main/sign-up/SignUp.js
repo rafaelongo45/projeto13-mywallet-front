@@ -15,7 +15,7 @@ function SignUp() {
       return
     }
 
-    const promise = axios.post("http://127.0.0.1:5000/signup", {
+    const promise = axios.post("https://mywallet-b.herokuapp.com/signup", {
       name: userData.name, 
       email: userData.email,
       password: userData.password

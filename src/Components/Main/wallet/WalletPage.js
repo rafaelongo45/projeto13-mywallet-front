@@ -22,7 +22,7 @@ function WalletPage() {
       'Authorization': `Bearer ${data.token}`
     }
   }
-    const promise = axios.get("http://127.0.0.1:5000/transactions", config);
+    const promise = axios.get("https://mywallet-b.herokuapp.com/transactions", config);
 
     promise.then((response) => {
       setTransactions(response.data);

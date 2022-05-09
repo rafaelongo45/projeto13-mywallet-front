@@ -23,7 +23,7 @@ function RenderTransactions({transactions, total, setTotal}){
         }
     }  
 
-    const promise = axios.delete(`http://127.0.0.1:5000/transactions/${id}`, config);
+    const promise = axios.delete(`https://mywallet-b.herokuapp.com/transactions/${id}`, config);
 
       promise.then((response) => {
         console.log(response);
